@@ -5,6 +5,7 @@ import com.example.doctorpractice.scheduling.domain.DailySchedule
 import com.example.doctorpractice.scheduling.domain.DailyScheduleId
 import com.example.doctorpractice.scheduling.domain.SlotId
 import com.example.doctorpractice.scheduling.domain.commands.ScheduleDay
+import com.example.doctorpractice.scheduling.domain.errors.SlotOverlapped
 import com.example.doctorpractice.scheduling.domain.events.DayScheduled
 import com.example.doctorpractice.scheduling.domain.events.SlotScheduled
 import com.example.doctorpractice.scheduling.fixtures.*
@@ -18,7 +19,7 @@ class DailyScheduleTests : WriteModelTests<DailySchedule>() {
     override fun commandHandlers() = CommandHandlers(repository, idGenerator)
 
     @Test
-    fun `schedule a day`() {
+    fun `slots scheduled by a single doctor for a day`() {
         given(noEvents)
         whenever(
             ScheduleDay(
@@ -51,5 +52,21 @@ class DailyScheduleTests : WriteModelTests<DailySchedule>() {
                 ),
             )
         )
+    }
+
+    @Test
+    fun `slots scheduled by a single doctor cannot overlap`() {
+        given(noEvents)
+        whenever(
+            ScheduleDay(
+                doctorId,
+                today,
+                listOf(
+                    ScheduleDay.Slot(eightAm, tenMinutes),
+                    ScheduleDay.Slot(eightAm.plusMinutes(1), tenMinutes),
+                )
+            )
+        )
+        then(SlotOverlapped::class)
     }
 }

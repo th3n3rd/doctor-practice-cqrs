@@ -4,6 +4,7 @@ import com.example.doctorpractice.scheduling.application.commands.CommandDispatc
 import com.example.doctorpractice.scheduling.application.commands.CommandHandlers
 import com.example.doctorpractice.scheduling.domain.AggregateRoot
 import org.assertj.core.api.Assertions
+import kotlin.reflect.KClass
 
 abstract class WriteModelTests<Aggregate : AggregateRoot<*>> {
 
@@ -34,5 +35,10 @@ abstract class WriteModelTests<Aggregate : AggregateRoot<*>> {
 
     fun then(events: List<Any>) {
         Assertions.assertThat(aggregate.changes).isEqualTo(events)
+    }
+
+    fun <T : Throwable> then(errorType: KClass<T>) {
+        Assertions.assertThat(error).isNotNull()
+        Assertions.assertThat(error!!::class).isEqualTo(errorType)
     }
 }
