@@ -1,0 +1,17 @@
+version: '3.7'
+
+services:
+  event-store:
+    image: eventstore/eventstore:20.6.1-buster-slim
+    environment:
+      - EVENTSTORE_INSECURE=true
+      - EVENTSTORE_RUN_PROJECTIONS=all
+      - EVENTSTORE_START_STANDARD_PROJECTIONS=true
+      - EVENTSTORE_ENABLE_ATOM_PUB_OVER_HTTP=true
+    ports:
+      - "2113:2113"
+
+  projection-store:
+    image: mongo
+    ports:
+      - "27017-27019:27017-27019"

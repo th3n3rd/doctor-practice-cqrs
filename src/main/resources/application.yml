@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: doctor-practice
+
+application:
+  tenancy: prod
+  event-store:
+    url: esdb://admin:changeit@localhost:2113?tlsVerifyCert=false&tls=false
+  projection-store:
+    url: mongodb://localhost:27017/projections-${application.tenancy}
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+
+application:
+  tenancy: test-${random.uuid}

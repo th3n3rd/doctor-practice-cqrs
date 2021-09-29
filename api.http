@@ -1,0 +1,25 @@
+### Schedule a whole day
+POST http://localhost:8080/daily-schedules
+Content-Type: application/json
+
+{
+    "doctorId": "c4b1f51a-d611-4ff6-bd57-6aad346104e8",
+    "date": "2021-09-25",
+    "slots": [
+        {
+            "duration": "PT10m",
+            "startTime": "08:10:00"
+        },
+        {
+            "duration": "PT10m",
+            "startTime": "08:20:00"
+        },
+        {
+            "duration": "PT10m",
+            "startTime": "08:30:00"
+        }
+    ]
+}
+
+### List available slots
+GET http://localhost:8080/slots/2021-09-25/available
